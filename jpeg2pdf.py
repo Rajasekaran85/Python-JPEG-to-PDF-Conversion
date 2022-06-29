@@ -2,40 +2,42 @@ import sys
 import img2pdf
 import os
 
-print("\n JPEG to PDF Conversion\n")
-print("\n Developed by A Rajasekaran\n")
-print("\n Date: 19 April 2022 \n\n")
+print("\n JPG to PDF Conversion \n")
+
+# img2pdf library used
+# Enter the JPG file location
+# After tool execution converted the PDF files will created in the "PDF" folder of the same tif file path
 
 filepath = input(" Enter the file path: ")
 
-#print(filepath)
+directory = "PDF"
 
-#filepath = sys.argv[1]
-if os.path.isdir(filepath):
-    with open(filepath + "\output.pdf", "wb") as f:       # Create the output file name
-        imgs = []
-       
-        for fname in os.listdir(filepath):
-            #print(fname)
-            if not fname.endswith(".jpg"):
-                continue
-            path = os.path.join(filepath, fname) # path name & jpeg file name 
-            #print(path)
-            """
-            if os.path.isdir(path):              
-                continue
-            print(os.path.isdir)
-            """
-            imgs.append(path)
-            
-            #print(imgs.append)
-            
-        f.write(img2pdf.convert(imgs))
-        
-elif os.path.isfile(filepath):
-    if filepath.endswith(".jpg"):
-        with open("output.pdf", "wb") as f:
-            f.write(img2pdf.convert(filepath))
+output = filepath + "\\" + directory
+
+if os.path.exists(output):
+    pass
 else:
-    print("please provide input file path")
+    os.mkdir(output)
 
+for fname in os.listdir(filepath):
+	if not fname.endswith(".jpg"):
+		continue
+	sp = os.path.splitext(fname)[0] 
+	path = os.path.join(filepath, fname) 
+	jpegname =  filepath + "\\" + fname
+	pdfname = output + "\\" + sp + ".pdf"
+	print(pdfname)
+
+	# creating pdf file
+	file = open(pdfname, "wb")
+
+	# converting image into pdf
+	convpdf = img2pdf.convert(jpegname)
+
+	# writing the pdf output file
+	file.write(convpdf)
+
+	# closing the pdf file
+	file.close
+
+print("\n\nPDF Conversion Completed")
